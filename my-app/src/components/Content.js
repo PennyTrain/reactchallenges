@@ -1,35 +1,41 @@
 import React, { Component } from "react";
 import css from "./css/Content.module.css";
-import savedPost from "../posts.json";
+// import savedPost from "../posts.json";
 import PostItem from "./PostItem";
+import Loader from "./Loader";
+import posts from "../posts.json";
 
 export class Content extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoaded: false
+        }
+    }
 
-
+    componentDidMount() {
+        setTimeout(()=>{
+            this.setState({
+                isLoaded: true,
+            })
+        }, 2000)
+    }
+    
     render() {
+        const savedPost = posts.savedPosts;
         return (
             <div className={css.Content}>
-
                 <div className={css.TitleBar}>
                     <h1>My Photos</h1>
                 </div>
-{console.log(savedPost)}
+
                 <div className={css.SearchResults}>
+                   
+
                     {
-                        savedPost.map((post) => {
-                            return <div className={css.SearchItem} key={post.title}>
-                                <p>{post.title}</p>
-                                <p>{post.name}</p>
-                                <img src={post.image} alt="random" />
-                                <p>{post.description}</p>
-                            </div>
-                        })
-                    }
-
-
-
-
-                    <PostItem savedPosts={savedPost} />
+                        this.state.isLoaded ?
+                    <PostItem savedPosts={savedPost} /> : <Loader />
+                    }   
                 </div>
             </div>
         )
